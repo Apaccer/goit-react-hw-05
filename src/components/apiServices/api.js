@@ -9,6 +9,37 @@ const options = {
 };
 export const getTrendingMovies = async () => {
   const { data } = await axios.get(url, options);
-  console.log(data);
+  return data;
+};
+
+export const searchMoviesByQuery = async (query) => {
+  const { data } = await axios.get(
+    `https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=1&query=${query}`,
+    options
+  );
+  return data;
+};
+
+export const searchMoviesDetailsById = async (id) => {
+  const { data } = await axios.get(
+    `https://api.themoviedb.org/3/movie/${id}?language=en-US'`,
+    options
+  );
+  return data;
+};
+
+export const searchMoviesCreditsById = async (id) => {
+  const { data } = await axios.get(
+    `https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`,
+    options
+  );
+  return data;
+};
+
+export const searchMoviesRevById = async (id) => {
+  const { data } = await axios.get(
+    `https://api.themoviedb.org/3/movie/${id}/reviews?language=en-US&page=1`,
+    options
+  );
   return data;
 };

@@ -3,13 +3,15 @@ import css from "./MoviesPage.module.css";
 import toast, { Toaster } from "react-hot-toast";
 import { searchMoviesByQuery } from "../../components/apiServices/api";
 import MovieList from "../../components/MovieList/MovieList";
+import Loader from "../../components/Loader/Loader";
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (query.length === 0) return;
-
+    setLoading(true);
     const fetchMovies = async () => {
       try {
         const data = await searchMoviesByQuery(query);
@@ -17,6 +19,7 @@ const MoviesPage = () => {
       } catch (error) {
         // setError(true);
       } finally {
+        setLoading(false);
       }
     };
     fetchMovies();
@@ -50,12 +53,13 @@ const MoviesPage = () => {
           type="text"
           autoComplete="off"
           autoFocus
-          placeholder="Search images and photos"
+          placeholder="Search movies"
         />
         <button className={css.searchBtn} title="Pres for search" type="submit">
           🔎
         </button>
       </form>
+      {loading && <Loader />}
       <MovieList movies={movies} />
       <Toaster position="top-center" reverseOrder={false} />
     </div>

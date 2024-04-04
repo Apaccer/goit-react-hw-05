@@ -22,7 +22,7 @@ const MovieReviews = () => {
   }, [movieId]);
   return (
     <ul className={css.revList}>
-      {Array.isArray(movieRev) &&
+      {movieRev.length > 0 ? (
         movieRev.map((rev) => {
           return (
             <li key={rev.id} className={css.revItem}>
@@ -30,7 +30,10 @@ const MovieReviews = () => {
               <p>{rev.content}</p>
             </li>
           );
-        })}
+        })
+      ) : (
+        <p className={css.sorr}>Sorry, no yet review</p>
+      )}
     </ul>
   );
 };

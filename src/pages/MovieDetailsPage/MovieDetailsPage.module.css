@@ -24,3 +24,15 @@
 .revenue {
   margin-bottom: 20px;
 }
+.detbtn {
+  padding: 10px 20px 10px 20px;
+  color: aliceblue;
+  font-size: 16px;
+  background-color: transparent;
+  text-align: center;
+  background-color: rgb(43, 109, 180);
+  border-radius: 10px;
+  display: inline-flex;
+  margin-right: 20px;
+  margin-top: 20px;
+}

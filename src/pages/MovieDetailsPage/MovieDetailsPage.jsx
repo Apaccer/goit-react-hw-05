@@ -1,6 +1,6 @@
-import { Link, Route, Routes, useParams } from "react-router-dom";
+import { Link, Route, Routes, useLocation, useParams } from "react-router-dom";
 import { searchMoviesDetailsById } from "../../components/apiServices/api";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import css from "./MovieDetailsPage.module.css";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviews from "../../components/MovieReviews/MovieReviews";
@@ -8,7 +8,8 @@ import MovieReviews from "../../components/MovieReviews/MovieReviews";
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const [movieDetails, setmovieDetails] = useState({});
-
+  const location = useLocation();
+  const backLinkRef = useRef(location.state ?? "/");
   useEffect(() => {
     if (!movieId) return;
 
@@ -29,7 +30,7 @@ const MovieDetailsPage = () => {
     movieDetails.genres.map((genre) => genre.name).join(", ");
   return (
     <div>
-      <Link to="/movies">Go back</Link>
+      <Link to={backLinkRef.current}>← Go back</Link>
       <div className={css.mainContainer}>
         <div className={css.detailContainer}>
           <img
@@ -48,8 +49,13 @@ const MovieDetailsPage = () => {
             </p>
           </div>
         </div>
-        <Link to="cast"> Cast</Link>
-        <Link to="reviews">Reviews</Link>
+        <Link className={css.detbtn} to="cast">
+          {" "}
+          Cast
+        </Link>
+        <Link className={css.detbtn} to="reviews">
+          Reviews
+        </Link>
         <Routes>
           <Route path="cast" element={<MovieCast />} />
           <Route path="reviews" element={<MovieReviews />} />

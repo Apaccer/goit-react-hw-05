@@ -50,11 +50,13 @@ const MovieDetailsPage = () => {
           <img
             className={css.img}
             src={
-              poster_path
+              movieDetails.poster_path
                 ? `https://image.tmdb.org/t/p/w300${movieDetails.poster_path}`
                 : defaultImg
             }
             alt=""
+            width={300}
+            height={450}
           />
           <div className={css.movieDetails}>
             <h2 className={css.name}>{movieDetails.original_title}</h2>

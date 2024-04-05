@@ -32,7 +32,6 @@ const MovieCast = () => {
 
   return (
     <>
-      {" "}
       {loading && <Loader />}
       {error && <ErrorMessage />}{" "}
       <ul className={css.actors}>

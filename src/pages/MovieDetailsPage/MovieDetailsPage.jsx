@@ -1,6 +1,6 @@
-import { Link, Route, Routes, useLocation, useParams } from "react-router-dom";
+import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 import { searchMoviesDetailsById } from "../../components/apiServices/api";
-import { Suspense, lazy, useEffect, useRef, useState } from "react";
+import { lazy, useEffect, useRef, useState } from "react";
 import css from "./MovieDetailsPage.module.css";
 import Loader from "../../components/Loader/Loader";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
@@ -70,18 +70,12 @@ const MovieDetailsPage = () => {
           </div>
         </div>
         <Link className={css.detbtn} to="cast">
-          {" "}
           Cast
         </Link>
         <Link className={css.detbtn} to="reviews">
           Reviews
         </Link>
-        <Suspense fallback={<Loader />}>
-          <Routes>
-            <Route path="cast" element={<MovieCast />} />
-            <Route path="reviews" element={<MovieReviews />} />
-          </Routes>
-        </Suspense>
+        <Outlet />
         {error && <ErrorMessage />}
       </div>
     </div>

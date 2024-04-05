@@ -20,7 +20,7 @@ const SearchForm = ({ onSearchQuery }) => {
     e.target.reset();
   };
   return (
-    <div>
+    <div className={css.form}>
       <form className={css.searchForm} onSubmit={onSubmit}>
         <input
           className={css.searchField}

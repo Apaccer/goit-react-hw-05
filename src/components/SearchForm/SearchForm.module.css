@@ -1,6 +1,9 @@
+.form {
+  display: flex;
+  justify-content: center;
+}
 .searchForm {
   position: relative;
-  text-align: center;
 }
 
 .searchField {
@@ -14,7 +17,7 @@
 
 .searchBtn {
   position: absolute;
-  left: 277px;
+  left: 0;
   top: 50%;
   transform: translateY(-50%);
   border: none;

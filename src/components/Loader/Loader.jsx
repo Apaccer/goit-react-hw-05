@@ -4,6 +4,7 @@ const Loader = () => {
   return (
     <div className={css.loader}>
       <CirclesWithBar
+        className={css.load}
         height="80"
         width="80"
         color="rgb(43, 109, 180)"

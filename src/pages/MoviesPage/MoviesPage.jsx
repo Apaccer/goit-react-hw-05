@@ -4,64 +4,45 @@ import toast, { Toaster } from "react-hot-toast";
 import { searchMoviesByQuery } from "../../components/apiServices/api";
 import MovieList from "../../components/MovieList/MovieList";
 import Loader from "../../components/Loader/Loader";
+import SearchForm from "../../components/SearchForm/SearchForm";
+import { useSearchParams } from "react-router-dom";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
-  const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get("query");
+
   useEffect(() => {
-    if (query.length === 0) return;
+    if (!query) return;
+    setError(false);
     setLoading(true);
     const fetchMovies = async () => {
       try {
         const data = await searchMoviesByQuery(query);
         setMovies(data.results);
       } catch (error) {
-        // setError(true);
+        setError(true);
       } finally {
         setLoading(false);
       }
     };
     fetchMovies();
   }, [query]);
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    const value = e.target.search.value;
-    if (value.trim() === "") {
-      toast("Please enter text to search for movies!", {
-        icon: "✍🏻",
-        style: {
-          borderRadius: "10px",
-          background: "red",
-          color: "#fff",
-        },
-      });
-
-      return;
-    }
-    setQuery(value.trim());
-    e.target.reset();
+  const onSearchQuery = (queryTerm) => {
+    setSearchParams({ query: queryTerm });
   };
 
   return (
     <div>
-      <form className={css.searchForm} onSubmit={onSubmit}>
-        <input
-          className={css.searchField}
-          name="search"
-          type="text"
-          autoComplete="off"
-          autoFocus
-          placeholder="Search movies"
-        />
-        <button className={css.searchBtn} title="Pres for search" type="submit">
-          🔎
-        </button>
-      </form>
-      {loading && <Loader />}
+      <SearchForm onSearchQuery={onSearchQuery} />
+
       <MovieList movies={movies} />
       <Toaster position="top-center" reverseOrder={false} />
+      {error && <ErrorMessage />}
+      {loading && <Loader />}
     </div>
   );
 };

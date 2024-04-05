@@ -1,25 +1,35 @@
 import { Link, Route, Routes, useLocation, useParams } from "react-router-dom";
 import { searchMoviesDetailsById } from "../../components/apiServices/api";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import css from "./MovieDetailsPage.module.css";
-import MovieCast from "../../components/MovieCast/MovieCast";
-import MovieReviews from "../../components/MovieReviews/MovieReviews";
+import Loader from "../../components/Loader/Loader";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
+const MovieCast = lazy(() => import("../../components/MovieCast/MovieCast"));
+const MovieReviews = lazy(() =>
+  import("../../components/MovieReviews/MovieReviews")
+);
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const [movieDetails, setmovieDetails] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const location = useLocation();
   const backLinkRef = useRef(location.state ?? "/");
+
   useEffect(() => {
     if (!movieId) return;
 
     const fetchMovieDetails = async () => {
       try {
+        setError(false);
+        setLoading(true);
         const data = await searchMoviesDetailsById(movieId);
         setmovieDetails(data);
       } catch (error) {
-        // setError(true);
+        setError(true);
       } finally {
+        setLoading(false);
       }
     };
     fetchMovieDetails();
@@ -31,6 +41,7 @@ const MovieDetailsPage = () => {
   return (
     <div>
       <Link to={backLinkRef.current}>← Go back</Link>
+      {loading && <Loader />}
       <div className={css.mainContainer}>
         <div className={css.detailContainer}>
           <img
@@ -56,10 +67,13 @@ const MovieDetailsPage = () => {
         <Link className={css.detbtn} to="reviews">
           Reviews
         </Link>
-        <Routes>
-          <Route path="cast" element={<MovieCast />} />
-          <Route path="reviews" element={<MovieReviews />} />
-        </Routes>
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            <Route path="cast" element={<MovieCast />} />
+            <Route path="reviews" element={<MovieReviews />} />
+          </Routes>
+        </Suspense>
+        {error && <ErrorMessage />}
       </div>
     </div>
   );
